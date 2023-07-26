@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../BugReproductions/pkg-tesseract.js-repro"
+		},
+		{
+			"path": "../BugReproductions/pkg"
+		},
+		{
+			"path": "../BugReproductions/pkg2"
+		}
+	],
+	"settings": {}
+}

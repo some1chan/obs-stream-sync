@@ -1,0 +1,7 @@
+/.github
+/.vscode
+
+# Node app
+dist
+node_modules
+pnpm-lock.yaml

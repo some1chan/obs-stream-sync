@@ -1,0 +1,23 @@
+{
+	// Tabs are great for accessibility
+	tabWidth: 4,
+	useTabs: true,
+	// Semicolons are a preference
+	semi: true,
+	// Prefer avoiding for cleanliness
+	arrowParens: "avoid",
+	// Standard width
+	printWidth: 80,
+	// Git mainly deals with this anyway
+	endOfLine: "auto",
+	// Easier to edit
+	trailingComma: "es5",
+	overrides: [
+		{
+			files: ["package.json5"],
+			options: {
+				singleQuote: true,
+			},
+		},
+	],
+}

@@ -1,0 +1,39 @@
+{
+	"compilerOptions": {
+		/* Basic Options */
+		"lib": ["ES2020"],
+		"target": "ES2020",
+		"module": "CommonJS",
+		"baseUrl": ".",
+		"outDir": "dist",
+		"rootDir": ".",
+
+		/* Strict Type-Checking Options */
+		"strict": true,
+
+		/* Module Resolution Options */
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+
+		/* Experimental */
+		"resolveJsonModule": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+
+		/* Advanced Options (that i don't understand) */
+		"forceConsistentCasingInFileNames": false,
+		"skipLibCheck": true,
+
+		/* Other */
+		"incremental": true
+	},
+	"include": ["src/**/*", "src/**/*.json", "package.json"],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"**/*.test.ts",
+		"**/*.spec.ts",
+		"data/**",
+		"md/**"
+	]
+}

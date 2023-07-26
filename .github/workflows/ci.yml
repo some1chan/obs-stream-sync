@@ -1,0 +1,58 @@
+name: Publish release artifacts
+
+on:
+  push:
+    branches: ["main"]
+    # Publish `v1.2.3` tags as releases.
+    tags: ["v*.*.*"]
+
+  # Run tests for any PRs.
+  pull_request:
+
+env:
+  USER_NAME: ${{ github.repository_owner }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get version from tag name
+        run: |
+          TEMP=$(echo "$GITHUB_REF_NAME" | grep -Po "(?<=v)\d+.\d+.\d+")
+          echo "VERSION=$TEMP" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install package dependencies
+        run: pnpm install
+
+      - name: Transpile TypeScript to JavaScript
+        run: pnpm build
+
+      - name: Build executables
+        run: pnpm build:pkg
+
+      - name: Edit executable names
+        run: |
+          cp "./dist/obs-stream-sync-linuxstatic" "./dist/obs-stream-sync-${{ env.VERSION }}-linuxstatic"
+          cp "./dist/obs-stream-sync-macos" "./dist/obs-stream-sync-${{ env.VERSION }}-macos"
+          cp "./dist/obs-stream-sync-win.exe" "./dist/obs-stream-sync-${{ env.VERSION }}-win.exe"
+          
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ./dist/obs-stream-sync-${{ env.VERSION }}-linuxstatic
+            ./dist/obs-stream-sync-${{ env.VERSION }}-macos
+            ./dist/obs-stream-sync-${{ env.VERSION }}-win.exe
