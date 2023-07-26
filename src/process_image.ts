@@ -1,5 +1,5 @@
 import Jimp from "jimp";
-import { Config } from "./Config";
+import { Config } from "./config";
 import * as Logger from "./logger";
 
 export async function processImage(
