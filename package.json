@@ -1,6 +1,6 @@
 {
 	"name": "obs-stream-sync",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "A Node.js app that reads QR codes off livestreams, and sets delays accordingly.",
 	"main": "dist/src/index.js",
 	"//": "'bin' is used with pkg",
