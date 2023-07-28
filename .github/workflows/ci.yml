@@ -2,10 +2,10 @@ name: Publish release artifacts
 
 on:
   push:
-    branches: ["main"]
-    # Publish `v1.2.3` tags as releases.
-    tags: ["v*.*.*"]
-
+    tags:
+      - "v*"
+  workflow_dispatch:
+  
   # Run tests for any PRs.
   pull_request:
 
