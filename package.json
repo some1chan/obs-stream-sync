@@ -105,7 +105,7 @@
 		"compare-versions": "6.0.0-rc.1",
 		"configparser": "^0.3.10",
 		"dayjs": "^1.11.9",
-		"enquirer": "^2.3.6",
+		"enquirer": "^2.4.0",
 		"jimp": "^0.17.10",
 		"jsqr": "^1.4.0",
 		"mathjs": "^11.9.1",
