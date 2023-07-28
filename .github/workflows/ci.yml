@@ -5,7 +5,7 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
-  
+
   # Run tests for any PRs.
   pull_request:
 
@@ -18,6 +18,8 @@ concurrency:
 
 jobs:
   publish:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Get version from tag name
