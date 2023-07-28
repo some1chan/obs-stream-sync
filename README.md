@@ -2,7 +2,7 @@
 
 `obs-stream-sync` is a Node.js program that visually reads timestamps on OBS stream sources, calculates proper delays, and then syncs audio and video together.
 
-[Download App](https://github.com/some1chan/obs-stream-sync/releases/) - [Download Scene Collection and Profile](https://g.co)
+[Download App](https://github.com/some1chan/obs-stream-sync/releases/) - [Download Scene Collection and Profile](https://cdn.discordapp.com/attachments/980776150617956374/1133780333037375558/DCELL_Gameplay_0.4.0.zip)
 
 ## Table of Contents
 
@@ -31,7 +31,7 @@ graph TD
 ## How to Set Up
 
 1. [Download the app](https://github.com/some1chan/obs-stream-sync/releases/), and follow the instructions given in the app. This will help you connect your local OBS instance with it.
-1. For remote OBS clients, [download the Scene Collection and Profile](https://g.co), and load them in with **Profile > Import** and **Scene Collection > Add**, then import them both.
+1. For remote OBS clients, [download the Scene Collection and Profile](https://cdn.discordapp.com/attachments/980776150617956374/1133780333037375558/DCELL_Gameplay_0.4.0.zip), and load them in with **Profile > Import** and **Scene Collection > Add**, then import them both.
 
 ## config.ini
 
