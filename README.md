@@ -24,7 +24,7 @@ graph TD
 ```
 
 -   Each client/streamer whose stream needs to be synced has a special layout. This layout has URL sources connected to [qr.syncer.live](https://qr.syncer.live) that displays a synced-up time, similar to [time.curby.net](https://time.curby.net/clock). Theoretically, the same thing will be displayed will be shown on everyone's stream at the exact same time from this.
--   The host who's injesting everyone's streams runs `obs-stream-sync`. This program will hook into your local OBS instance via OBS's WebSocket Server.
+-   The host who's ingesting everyone's streams runs `obs-stream-sync`. This program will hook into your local OBS instance via OBS's WebSocket Server.
 -   The program checks for a Scene named "Stream Sources" in your Sources for livestreams. It'll request screenshots from OBS, and will read the QR Codes from it.
     -   You can change the name in the auto-generated `config.ini`
 
@@ -32,6 +32,11 @@ graph TD
 
 1. [Download the app](https://github.com/some1chan/obs-stream-sync/releases/), and follow the instructions given in the app. This will help you connect your local OBS instance with it.
 1. For remote OBS clients, [download the Scene Collection and Profile](https://cdn.discordapp.com/attachments/980776150617956374/1133780333037375558/DCELL_Gameplay_0.4.0.zip), and load them in with **Profile > Import** and **Scene Collection > Add**, then import them both.
+1. Have these remote OBS clients stream to a server. This will need to be something an OBS Media Source can ingest, like RTMP or SRT.
+1. Ingest those streams through OBS's Media Source. Put your Media Sources in the scene that will be displayed for the viewer, and for `obs-stream-sync` in a scene named "Stream Sources". This name can be changed in the config. See [`config.example.ini`](./config.example.ini).
+1. Now you should be done! Try using option 1 in the program, seeing if the numbers make sense, then try syncing.
+
+If you run into any issues, please see [Troubleshooting](#troubleshooting), and if you're still stuck, [open an issue](https://github.com/some1chan/obs-stream-sync/issues)!
 
 ## config.ini
 
@@ -81,6 +86,12 @@ If you have [Portmaster](https://github.com/safing/portmaster/) installed, this 
 If you would like to sanity check if you can connect to your OBS instance at all, try [obs-web.niek.tv](http://obs-web.niek.tv/), and make sure it's in HTTP mode.
 
 </details>
+
+## Future Plans
+
+-   [ ] Allow for set delays, that aren't affected by stream syncing.
+
+    > Data will be stored with obs-websocket data storage introduced in v5.
 
 ## Want to Contribute?
 
