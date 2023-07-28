@@ -15,12 +15,19 @@ try {
 console.log(`\n${logo}\n`);
 
 import c from "ansi-colors";
+
+// @ts-expect-error - Types
+const processPkgEntrypoint = process["pkg"]?.entrypoint;
+const packageJsonPath =
+	processPkgEntrypoint != undefined
+		? path.join(__dirname, "../../package.json")
+		: "package.json";
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath).toString());
+const version = packageJson["version"];
 console.log(
 	stripIndents`
 	GitHub: ${c.underline("https://github.com/some1chan/obs-stream-sync")}
-	Running ${c.bold(
-		`${process.env.npm_package_name ?? "obs-stream-sync"}`
-	)} version ${process.env.npm_package_version ?? "0.1.1"}`
+	Running ${c.bold("obs-stream-sync")} version ${version}`
 );
 
 import OBSWebSocket, {
