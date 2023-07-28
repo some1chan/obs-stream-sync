@@ -80,6 +80,7 @@
 		"ava": "^5.3.1",
 		"commitizen": "^4.3.0",
 		"cross-env": "^7.0.3",
+		"cz-conventional-changelog": "^3.3.0",
 		"nodemon": "^2.0.22",
 		"pkg": "^5.8.1",
 		"ts-node": "^10.9.1",
