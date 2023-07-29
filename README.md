@@ -1,6 +1,6 @@
 # obs-stream-sync
 
-`obs-stream-sync` is a Node.js program that visually reads timestamps on OBS stream sources, calculates proper delays, and then syncs audio and video together.
+`obs-stream-sync` lets you easily sync two livestreams in OBS together, using delay filters and a special layout.
 
 [Download App](https://github.com/some1chan/obs-stream-sync/releases/) - [Download Scene Collection and Profile](https://cdn.discordapp.com/attachments/980776150617956374/1133780333037375558/DCELL_Gameplay_0.4.0.zip)
 
