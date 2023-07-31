@@ -32,6 +32,7 @@ console.log(
 
 import OBSWebSocket, {
 	OBSRequestTypes,
+	OBSResponseTypes,
 	RequestBatchExecutionType,
 } from "obs-websocket-js";
 import * as Logger from "./logger";
@@ -631,10 +632,18 @@ async function _generateSourceData(
 	});
 
 	// Then, builds a request to fetch all source filters all at once
+	// and build request for audio delay
 	const sourceFilterListRequest: {
 		requestType: "GetSourceFilterList";
-		requestData: { sourceName: string };
+		requestData: OBSRequestTypes["GetSourceFilterList"];
+		requestId: string;
 	}[] = [];
+	const inputAudioOffsetListRequest: {
+		requestType: "GetInputAudioSyncOffset";
+		requestData: OBSRequestTypes["GetInputAudioSyncOffset"];
+		requestId: string;
+	}[] = [];
+	const sourceList: SourceData[] = [];
 	for (const sceneItem of sceneItemList.sceneItems) {
 		const validSceneItems = ["ffmpeg_source", "vlc_source"];
 		if (!validSceneItems.includes(sceneItem["inputKind"] as string)) {
@@ -649,29 +658,43 @@ async function _generateSourceData(
 		sourceFilterListRequest.push({
 			requestType: "GetSourceFilterList",
 			requestData: { sourceName: sourceName },
+			requestId: sourceName,
+		});
+		inputAudioOffsetListRequest.push({
+			requestType: "GetInputAudioSyncOffset",
+			requestData: { inputName: sourceName },
+			requestId: sourceName,
 		});
 	}
 
-	// Get template, which includes source name and audio sync offset
-	const sourceList: SourceData[] = [];
-	for (const sceneItem of sceneItemList.sceneItems) {
-		const sourceName = sceneItem["sourceName"] as string;
-		// Logger.debug(sceneItem);
-		const audioDelay = await obs.call("GetInputAudioSyncOffset", {
-			inputName: sourceName,
-		});
+	// Get video filters data and audio sync data
+	const [sourceFilterListData, audioSyncResults] = await Promise.all([
+		obs.callBatch(sourceFilterListRequest, {
+			executionType: RequestBatchExecutionType.SerialRealtime,
+		}),
+		obs.callBatch(inputAudioOffsetListRequest, {
+			executionType: RequestBatchExecutionType.SerialRealtime,
+		}),
+	]);
+
+	// Create sourceList template, which includes source name and audio sync offset
+	for (const audioDelay of audioSyncResults) {
+		if (!audioDelay.requestStatus.result) {
+			throw new Error(
+				`${audioDelay.requestStatus.code}: ${audioDelay.requestStatus.comment}`
+			);
+		}
+		const responseData =
+			audioDelay.responseData as OBSResponseTypes["GetInputAudioSyncOffset"];
 		sourceList.push({
-			name: sourceName,
-			audioDelay: audioDelay.inputAudioSyncOffset,
+			name: audioDelay.requestId,
+			audioDelay: responseData.inputAudioSyncOffset,
 			videoDelay: 0,
 		});
 	}
 
-	// Get Video Filters data, and attaches scene item names
+	// From Video Filters data, and attaches scene item names
 	// to the filters, in sourceData
-	const sourceFilterListData = await obs.callBatch(sourceFilterListRequest, {
-		executionType: RequestBatchExecutionType.SerialRealtime,
-	});
 	for (let i = 0; i < sourceFilterListData.length; i++) {
 		const sourceFilter = sourceFilterListData[i];
 		const sourceName = sourceFilterListRequest[i].requestData.sourceName;
@@ -698,12 +721,38 @@ async function _generateSourceData(
 	}
 
 	// Get sources that are active
-	for (let i = 0; i < sourceList.length; i++) {
-		const sourceData = sourceList[i];
-		const sourceActiveData = await obs.call("GetSourceActive", {
-			sourceName: sourceData.name,
+	const sourceActiveListRequest: {
+		requestId: string;
+		requestType: "GetSourceActive";
+		requestData: OBSRequestTypes["GetSourceActive"];
+	}[] = [];
+	for (const sourceData of sourceList) {
+		sourceActiveListRequest.push({
+			requestId: sourceData.name,
+			requestType: "GetSourceActive",
+			requestData: { sourceName: sourceData.name },
 		});
-		sourceData.active = sourceActiveData.videoShowing;
+	}
+	const sourceActiveResults = await obs.callBatch(sourceActiveListRequest, {
+		executionType: RequestBatchExecutionType.SerialRealtime,
+	});
+	for (const sourceActiveData of sourceActiveResults) {
+		if (!sourceActiveData.requestStatus.result) {
+			throw new Error(
+				`${sourceActiveData.requestStatus.code}: ${sourceActiveData.requestStatus.comment}`
+			);
+		}
+		const responseData =
+			sourceActiveData.responseData as OBSResponseTypes["GetSourceActive"];
+		const sourceData = sourceList.find(
+			s => s.name == sourceActiveData.requestId
+		);
+		if (!sourceData) {
+			throw new Error(
+				`Source data missing: ${sourceActiveData.requestId}`
+			);
+		}
+		sourceData.active = responseData.videoShowing;
 
 		// Logs them if in GET mode
 		if (mode == HandleStreamDelayMode.Get) {
