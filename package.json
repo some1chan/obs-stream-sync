@@ -76,7 +76,7 @@
 	"devDependencies": {
 		"@changesets/cli": "^2.26.2",
 		"@types/common-tags": "^1.8.1",
-		"@types/node": "^18.17.1",
+		"@types/node": "^18.17.4",
 		"ava": "^5.3.1",
 		"commitizen": "^4.3.0",
 		"cross-env": "^7.0.3",
@@ -105,7 +105,7 @@
 		"compare-versions": "6.0.0-rc.1",
 		"configparser": "^0.3.10",
 		"dayjs": "^1.11.9",
-		"enquirer": "^2.4.0",
+		"enquirer": "^2.4.1",
 		"jimp": "^0.17.10",
 		"jsqr": "^1.4.0",
 		"mathjs": "^11.9.1",
