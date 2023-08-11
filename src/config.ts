@@ -21,6 +21,10 @@ export class Config {
 	readonly FETCH_REQUEST_BATCH_EXECUTION_TYPE =
 		"fetch_request_batch_execution_type";
 	readonly USE_DEFAULT_SOURCES_SORT = "use_default_sources_sort";
+	readonly FRAMERATE = "framerate";
+	readonly FRAMERATE_VALUE = 60;
+	readonly ROUND_DELAYS_TO_FRAMERATE = "round_delays_to_framerate";
+	readonly ROUND_DELAYS_TO_FRAMERATE_VALUE = 1;
 	//#endregion
 
 	readonly IMAGE_HEADER = "image";
@@ -102,7 +106,7 @@ If you don't know how to set this up:
 		}
 
 		this.parser.addSection(this.OBS_HEADER);
-		console.log
+		console.log;
 		console.log(
 			stripIndents`
 			Let's configure obs-stream-sync!
@@ -143,6 +147,16 @@ If you don't know how to set this up:
 					this.SOURCES_SCENE,
 					this.SOURCES_SCENE_VALUE
 				);
+				this.parser.set(
+					this.OBS_HEADER,
+					this.FRAMERATE,
+					this.FRAMERATE_VALUE
+				);
+				this.parser.set(
+					this.OBS_HEADER,
+					this.ROUND_DELAYS_TO_FRAMERATE,
+					this.ROUND_DELAYS_TO_FRAMERATE_VALUE
+				);
 
 				console.log(oneLine`Your new configuration will be saved to
 				${c.underline(`${process.cwd()}${path.sep}config.ini`)}.`);
@@ -152,7 +166,7 @@ If you don't know how to set this up:
 				});
 			} catch (error) {
 				if (typeof error == "string") {
-					console.log(error);
+					if (error == "") process.exit(1);
 					continue;
 				}
 				Logger.error((error as Error).stack);

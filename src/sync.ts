@@ -10,12 +10,18 @@ import * as Logger from "./logger";
  * - Sets visualOffsetMs
  * - Sets offsetMs
  * @param sourceList Audio Video Data
+ * @param timestampMsList
+ * @param options
  * @returns Timestamp data
  */
 export function calculateDelay(
 	sourceList: SourceData[],
 	timestampMsList: TimestampMillisecondData[],
-	options?: { logging?: boolean; sourceToSyncTo?: SourceData }
+	options?: {
+		logging?: boolean;
+		sourceToSyncTo?: SourceData;
+		roundToFramerate?: { framerate: number };
+	}
 ) {
 	// Applies screenshotDelayMs from audio/video data, into timestamp data
 	// and applies screenshot data
@@ -107,5 +113,35 @@ export function calculateDelay(
 			(timestamp.offsetMs ?? 0) - (timestampToSyncToClone.offsetMs ?? 0);
 	}
 
+	// Apply rounding
+	if (options?.roundToFramerate) {
+		for (const timestamp of validTimestamps) {
+			timestamp.offsetMs = _roundToFramerate(
+				timestamp.offsetMs ?? 0,
+				options.roundToFramerate.framerate
+			);
+		}
+	}
+
 	return timestampMsList;
+}
+
+function _roundToFramerate(ms: number, framerate: number): number {
+	// Calculates the duration of one frame in ms
+	// ex. 1000 ms / 60 fps = 16.67 ms per frame
+	const frameTimeMs = 1000 / framerate;
+
+	// Round the value to the nearest multiple of frameTimeMs
+	// ex. 30 / 16.67 = 1.8
+	//     Math.round(1.8) = 2
+	//	   2 * 16.67 = 33.33
+	const roundedValue = Math.round(ms / frameTimeMs) * frameTimeMs;
+
+	// Check if rounding this result number could be more simplified:
+	// ex. ms = 1000, but roundedValue = 1000.0000000000001 due to
+	//     floating point imprecision
+	if (Math.round(roundedValue) == ms) {
+		return ms;
+	}
+	return roundedValue;
 }

@@ -834,6 +834,19 @@ async function _fetchAndParseScreenshots(
 		calculateDelay(sourceList, timestampMsList, {
 			logging: true,
 			sourceToSyncTo: sourceToSyncTo,
+			roundToFramerate:
+				config.parser.getInt(
+					config.OBS_HEADER,
+					config.ROUND_DELAYS_TO_FRAMERATE
+				) != 0
+					? {
+							framerate:
+								config.parser.getInt(
+									config.OBS_HEADER,
+									config.FRAMERATE
+								) ?? config.FRAMERATE_VALUE,
+					  }
+					: undefined,
 		});
 	} catch (error) {
 		const err = error as Error;
