@@ -9,7 +9,7 @@ These instructions are only for people looking to contribute to this tool. If yo
 To compile `obs-stream-sync`, you will need to download or install these pre-requisites with your favorite package manager:
 
 -   [Git](https://git-scm.com/downloads)
--   [Node.js 18](https://nodejs.org/) (Untested with older versions)
+-   [Node.js 18](https://nodejs.org/) (Untested with other versions)
 
 ### Instructions
 
