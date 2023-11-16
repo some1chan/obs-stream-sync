@@ -2,11 +2,11 @@
 
 `obs-stream-sync` lets you easily sync two livestreams in OBS together, using delay filters and a special layout.
 
-[Download App](https://github.com/some1chan/obs-stream-sync/releases/) - [Download Scene Collection and Profile](https://cdn.discordapp.com/attachments/980776150617956374/1133780333037375558/DCELL_Gameplay_0.4.0.zip)
+[Download App](https://github.com/some1chan/obs-stream-sync/releases/) - [Download User Scene Collection and Profile](/docs/User%20Sync.zip) 
 
 ## Table of Contents
 
--   [How it works](#how-it-works)
+-   [How It Works](#how-it-works)
 -   [Troubleshooting](#troubleshooting)
 -   [Want to Contribute?](#want-to-contribute)
 -   [Special Thanks](#special-thanks)
@@ -31,7 +31,7 @@ graph TD
 ## How to Set Up
 
 1. [Download the app](https://github.com/some1chan/obs-stream-sync/releases/), and follow the instructions given in the app. This will help you connect your local OBS instance with it.
-1. For remote OBS clients, [download the Scene Collection and Profile](https://cdn.discordapp.com/attachments/980776150617956374/1133780333037375558/DCELL_Gameplay_0.4.0.zip), and load them in with **Profile > Import** and **Scene Collection > Add**, then import them both.
+1. For remote OBS clients, [download the Scene Collection and Profile](/docs/User%20Sync.zip), and load them in with **Profile > Import** and **Scene Collection > Add**, then import them both.
 1. Have these remote OBS clients stream to a server. This will need to be something an OBS Media Source can ingest, like RTMP or SRT.
 1. Ingest those streams through OBS's Media Source. Put your Media Sources in the scene that will be displayed for the viewer, and for `obs-stream-sync` in a scene named "Stream Sources". This name can be changed in the config. See [`config.example.ini`](./config.example.ini).
 1. Now you should be done! Try using option 1 in the program, seeing if the numbers make sense, then try syncing.
